@@ -2,6 +2,7 @@ package com.uniyaz.actor.service;
 
 import com.uniyaz.actor.dao.ActorDao;
 import com.uniyaz.actor.domain.Actor;
+import com.uniyaz.actor.queryfilterdto.ActorQueryFilterDto;
 
 import java.util.List;
 
@@ -25,5 +26,11 @@ public class ActorService {
     public List<Actor> findAllByName(String name) {
         ActorDao actorDao = new ActorDao();
         return actorDao.findAllByName(name);
+    }
+
+    public List<Actor> findAllByQueryFilterDto(ActorQueryFilterDto actorQueryFilterDto) {
+
+        ActorDao actorDao = new ActorDao();
+        return actorDao.findAllByQueryFilterDto(actorQueryFilterDto);
     }
 }

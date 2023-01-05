@@ -1,6 +1,7 @@
 package com.uniyaz.page.actor;
 
 import com.uniyaz.actor.domain.Actor;
+import com.uniyaz.actor.queryfilterdto.ActorQueryFilterDto;
 import com.uniyaz.actor.service.ActorService;
 import com.vaadin.data.Item;
 import com.vaadin.event.ItemClickEvent;
@@ -28,6 +29,7 @@ public class ActorPage extends VerticalLayout{
 
     private Button saveButton;
     private Button deleteButton;
+    private Button searchButton;
 
     public ActorPage() {
 
@@ -46,11 +48,44 @@ public class ActorPage extends VerticalLayout{
         buildButtonLayout();
         addComponent(buttonLayout);
 
-        fillTable();
+        ActorService actorService = new ActorService();
+        List<Actor> actorList = actorService.findAll();
+        fillTable(actorList);
     }
 
     private void buildFilterFormLayout() {
         filterFormLayout = new FormLayout();
+
+        idFiltre = new TextField();
+        idFiltre.setCaption("Id");
+        filterFormLayout.addComponent(idFiltre);
+
+        firstNameFilter = new TextField();
+        firstNameFilter.setCaption("First Name");
+        filterFormLayout.addComponent(firstNameFilter);
+
+        buildSearchButton();
+        filterFormLayout.addComponent(searchButton);
+    }
+
+    private void buildSearchButton() {
+
+        searchButton = new Button();
+        searchButton.setCaption("Search");
+        searchButton.setIcon(FontAwesome.SEARCH);
+        searchButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+
+                ActorQueryFilterDto actorQueryFilterDto = new ActorQueryFilterDto();
+                if (!idFiltre.getValue().equals("")) actorQueryFilterDto.setId(new Long(idFiltre.getValue()));
+                if (!firstNameFilter.getValue().equals("")) actorQueryFilterDto.setFirstName(firstNameFilter.getValue());
+
+                ActorService actorService = new ActorService();
+                List<Actor> actorList = actorService.findAllByQueryFilterDto(actorQueryFilterDto);
+                fillTable(actorList);
+            }
+        });
     }
 
     private void buildTableLayout() {
@@ -107,6 +142,9 @@ public class ActorPage extends VerticalLayout{
 
         buildSaveButton();
         buttonLayout.addComponent(saveButton);
+
+        buildDeleteButton();
+        buttonLayout.addComponent(deleteButton);
     }
 
     private void buildSaveButton() {
@@ -129,16 +167,35 @@ public class ActorPage extends VerticalLayout{
                 ActorService actorService = new ActorService();
                 actorService.save(actor);
 
-                fillTable();
+                List<Actor> actorList = actorService.findAll();
+                fillTable(actorList);
             }
         });
     }
 
-    private void fillTable() {
-        table.removeAllItems();
-        ActorService actorService = new ActorService();
-        List<Actor> actorList = actorService.findAll();
+    private void buildDeleteButton() {
 
+        deleteButton = new Button();
+        deleteButton.setCaption("Delete");
+        deleteButton.setIcon(FontAwesome.TRASH);
+        deleteButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                Actor actor = new Actor();
+                actor.setId(new Long(id.getValue()));
+
+                ActorService actorService = new ActorService();
+                actorService.delete(actor);
+
+                List<Actor> actorList = actorService.findAll();
+                fillTable(actorList);
+            }
+        });
+    }
+
+    private void fillTable(List<Actor> actorList) {
+
+        table.removeAllItems();
         for (Actor actor : actorList) {
             Item item = table.addItem(actor);
             item.getItemProperty("firstName").setValue(actor.getFirstName());
