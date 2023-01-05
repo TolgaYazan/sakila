@@ -3,10 +3,8 @@ package com.uniyaz.actor.dao;
 import com.uniyaz.HibernateUtil;
 import com.uniyaz.actor.domain.Actor;
 import com.uniyaz.actor.queryfilterdto.ActorQueryFilterDto;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 
@@ -74,6 +72,25 @@ public class ActorDao {
         }
 
         List<Actor> actorList = query.list();
+        return actorList;
+    }
+
+
+    public List<Actor> findAllByQueryFilterDtoCriteria(ActorQueryFilterDto actorQueryFilterDto) {
+
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session currentSession = sessionFactory.openSession();
+        Criteria criteria = currentSession.createCriteria(Actor.class);
+
+        if (actorQueryFilterDto.getId() != null) {
+            criteria.add(Restrictions.eq("id", actorQueryFilterDto.getId()));
+        }
+
+        if (actorQueryFilterDto.getFirstName() != null) {
+            criteria.add(Restrictions.eq("firstName", actorQueryFilterDto.getFirstName()));
+        }
+
+        List<Actor> actorList = criteria.list();
         return actorList;
     }
 }

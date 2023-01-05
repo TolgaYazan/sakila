@@ -1,6 +1,7 @@
 package com.uniyaz.actor.domain;
 
 import com.uniyaz.common.domain.BaseEntity;
+import org.hibernate.annotations.Index;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,6 +15,7 @@ public class Actor extends BaseEntity {
     @Column(name = "actor_id")
     private Long id;
 
+    @Index(name = "IDX_ACTOR_FIRST_NAME")
     @Column(name = "first_name", length = 45)
     private String firstName;
 
