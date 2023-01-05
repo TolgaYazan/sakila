@@ -5,6 +5,7 @@ import javax.servlet.annotation.WebServlet;
 import com.uniyaz.actor.domain.Actor;
 import com.uniyaz.actor.service.ActorService;
 import com.uniyaz.page.actor.ActorPage;
+import com.uniyaz.page.country.CountryPage;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
@@ -27,8 +28,11 @@ public class MyUI extends UI {
     @Override
     protected void init(VaadinRequest vaadinRequest) {
 
-        ActorPage actorPage = new ActorPage();
-        setContent(actorPage);
+//        ActorPage actorPage = new ActorPage();
+//        setContent(actorPage);
+
+        CountryPage countryPage = new CountryPage();
+        setContent(countryPage);
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
