@@ -95,6 +95,11 @@
 			<groupId>com.uniyaz</groupId>
 			<artifactId>sakila-core</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-envers</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

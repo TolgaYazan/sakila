@@ -17,5 +17,7 @@
         <mapping class="com.uniyaz.actor.domain.Actor"></mapping>
         <mapping class="com.uniyaz.country.domain.Country"></mapping>
         <mapping class="com.uniyaz.city.domain.City"></mapping>
+        <mapping class="com.uniyaz.film.domain.Film"></mapping>
+        <mapping class="com.uniyaz.filmactor.domain.FilmActor"></mapping>
     </session-factory>
 </hibernate-configuration>
