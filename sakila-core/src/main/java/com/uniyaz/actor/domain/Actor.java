@@ -2,12 +2,14 @@ package com.uniyaz.actor.domain;
 
 import com.uniyaz.common.domain.BaseEntity;
 import org.hibernate.annotations.Index;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Table(name = "actor")
 @Entity
+@Audited
 public class Actor extends BaseEntity {
 
     @Id

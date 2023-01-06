@@ -3,12 +3,14 @@ package com.uniyaz.city.domain;
 import com.uniyaz.common.domain.BaseEntity;
 import com.uniyaz.country.domain.Country;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Table(name = "city")
 @Entity
+@Audited
 public class City extends BaseEntity {
 
     @Id

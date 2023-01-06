@@ -3,7 +3,11 @@ package com.uniyaz.city.dao;
 import com.uniyaz.HibernateUtil;
 import com.uniyaz.city.domain.City;
 import com.uniyaz.city.queryfilterdto.CityQueryFilterDto;
+import com.uniyaz.country.domain.Country;
 import org.hibernate.*;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 
@@ -95,6 +99,24 @@ public class CityDao {
         if (cityQueryFilterDto.getCountry() != null) {
             criteria.add(Restrictions.eq("countryAlias.country", cityQueryFilterDto.getCountry().getCountry()));
         }
+
+        List<City> cityList = criteria.list();
+        return cityList;
+    }
+
+    public List<City> findAllByQueryFilterDtoDetachedCriteria(String countryName) {
+
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session currentSession = sessionFactory.openSession();
+        Criteria criteria = currentSession.createCriteria(City.class);
+        //criteria.createAlias("country", "countryAlias", JoinType.LEFT_OUTER_JOIN);
+        //criteria.add(Restrictions.eq("countryAlias.country", countryName));
+
+        DetachedCriteria detachedCriteria = DetachedCriteria.forClass(Country.class);
+        detachedCriteria.add(Restrictions.eq("country", countryName));
+        detachedCriteria.setProjection(Projections.property("id"));
+
+        criteria.add(Property.forName("country.id").in(detachedCriteria));
 
         List<City> cityList = criteria.list();
         return cityList;
