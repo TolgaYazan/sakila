@@ -1,9 +1,12 @@
 package com.uniyaz.city.queryfilterdto;
 
+import com.uniyaz.country.domain.Country;
+
 public class CityQueryFilterDto {
 
     private Long id;
     private String city;
+    private Country country;
 
     public Long getId() {
         return id;
@@ -19,5 +22,13 @@ public class CityQueryFilterDto {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 }

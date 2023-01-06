@@ -3,9 +3,7 @@ package com.uniyaz.page.country;
 import com.uniyaz.country.domain.Country;
 import com.uniyaz.country.service.CountryService;
 import com.vaadin.data.Item;
-import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Select;
 
 import java.util.List;
 

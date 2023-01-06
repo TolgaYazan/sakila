@@ -23,10 +23,13 @@ public class City extends BaseEntity {
     @Column(name = "last_update")
     private Date lastUpdate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")
     @ForeignKey(name = "fk_city_country")
     private Country country;
+
+    @Transient
+    private String testStr;
 
     @Override
     public Long getId() {
@@ -64,5 +67,13 @@ public class City extends BaseEntity {
     @Override
     public String toString() {
         return city;
+    }
+
+    public String getTestStr() {
+        return city;
+    }
+
+    public void setTestStr(String testStr) {
+        this.testStr = testStr;
     }
 }

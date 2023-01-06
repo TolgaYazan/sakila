@@ -3,6 +3,7 @@ package com.uniyaz.page.city;
 import com.uniyaz.city.domain.City;
 import com.uniyaz.city.queryfilterdto.CityQueryFilterDto;
 import com.uniyaz.city.service.CityService;
+import com.uniyaz.country.domain.Country;
 import com.uniyaz.page.country.CountryComboBox;
 import com.vaadin.data.Item;
 import com.vaadin.event.ItemClickEvent;
@@ -19,8 +20,9 @@ public class CityPage extends VerticalLayout{
     private VerticalLayout tableLayout;
     private FormLayout formLayout;
 
-    private TextField idFiltre;
+    private TextField idFilter;
     private TextField cityFilter;
+    private CountryComboBox countryFilter;
 
     private TextField id;
     private TextField cityField;
@@ -37,33 +39,47 @@ public class CityPage extends VerticalLayout{
         setMargin(true);
         setSpacing(true);
 
+        HorizontalLayout horizontalLayout = new HorizontalLayout();
+        horizontalLayout.setSpacing(true);
+        horizontalLayout.setMargin(true);
+        addComponent(horizontalLayout);
+
+        VerticalLayout verticalLayoutSol = new VerticalLayout();
+        horizontalLayout.addComponent(verticalLayoutSol);
+
         buildFilterFormLayout();
-        addComponent(filterFormLayout);
+        verticalLayoutSol.addComponent(filterFormLayout);
 
         buildTableLayout();
-        addComponent(tableLayout);
+        verticalLayoutSol.addComponent(tableLayout);
 
+        VerticalLayout verticalLayoutSag = new VerticalLayout();
+        horizontalLayout.addComponent(verticalLayoutSag);
         buildFormLayout();
-        addComponent(formLayout);
+        verticalLayoutSag.addComponent(formLayout);
 
         buildButtonLayout();
-        addComponent(buttonLayout);
+        verticalLayoutSag.addComponent(buttonLayout);
 
         CityService cityService = new CityService();
-        List<City> cityList = cityService.findAll();
+        List<City> cityList = cityService.findAllByQueryFilterDto(new CityQueryFilterDto());
         fillTable(cityList);
     }
 
     private void buildFilterFormLayout() {
         filterFormLayout = new FormLayout();
 
-        idFiltre = new TextField();
-        idFiltre.setCaption("Id");
-        filterFormLayout.addComponent(idFiltre);
+        idFilter = new TextField();
+        idFilter.setCaption("Id");
+        filterFormLayout.addComponent(idFilter);
 
         cityFilter = new TextField();
         cityFilter.setCaption("City");
         filterFormLayout.addComponent(cityFilter);
+
+        countryFilter = new CountryComboBox();
+        countryFilter.setCaption("Country");
+        filterFormLayout.addComponent(countryFilter);
 
         buildSearchButton();
         filterFormLayout.addComponent(searchButton);
@@ -79,11 +95,12 @@ public class CityPage extends VerticalLayout{
             public void buttonClick(Button.ClickEvent clickEvent) {
 
                 CityQueryFilterDto cityQueryFilterDto = new CityQueryFilterDto();
-                if (!idFiltre.getValue().equals("")) cityQueryFilterDto.setId(new Long(idFiltre.getValue()));
+                if (!idFilter.getValue().equals("")) cityQueryFilterDto.setId(new Long(idFilter.getValue()));
                 if (!cityFilter.getValue().equals("")) cityQueryFilterDto.setCity(cityFilter.getValue());
+                if (countryFilter.getValue() != null) cityQueryFilterDto.setCountry((Country) countryFilter.getValue());
 
                 CityService cityService = new CityService();
-                List<City> cityList = cityService.findAllByQueryFilterDto(cityQueryFilterDto);
+                List<City> cityList = cityService.findAllByQueryFilterDtoCriteria(cityQueryFilterDto);
                 fillTable(cityList);
             }
         });
@@ -118,6 +135,7 @@ public class CityPage extends VerticalLayout{
 
         id.setValue(city.getId().toString());
         cityField.setValue(city.getCity());
+        countryField.setValue(city.getCountry());
     }
 
     private void buildFormLayout() {
@@ -163,6 +181,7 @@ public class CityPage extends VerticalLayout{
                 }
                 city.setCity(cityField.getValue());
                 city.setLastUpdate(new Date());
+                city.setCountry((Country) countryField.getValue());
 
                 CityService cityService = new CityService();
                 cityService.save(city);

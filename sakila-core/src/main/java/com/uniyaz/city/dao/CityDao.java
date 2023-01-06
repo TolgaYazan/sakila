@@ -5,6 +5,7 @@ import com.uniyaz.city.domain.City;
 import com.uniyaz.city.queryfilterdto.CityQueryFilterDto;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class CityDao {
         String hql =
                 "Select city " +
                 "From City city " +
+                "Left Join fetch city.country country " +
                 "where 1=1 ";
 
         if (cityQueryFilterDto.getId() != null) {
@@ -48,6 +50,10 @@ public class CityDao {
 
         if (cityQueryFilterDto.getCity() != null) {
             hql += " and city.city = :city";
+        }
+
+        if (cityQueryFilterDto.getCountry() != null) {
+            hql += " and city.country = :country ";
         }
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -62,6 +68,10 @@ public class CityDao {
             query.setParameter("city", cityQueryFilterDto.getCity());
         }
 
+        if (cityQueryFilterDto.getCountry() != null) {
+            query.setParameter("country", cityQueryFilterDto.getCountry());
+        }
+
         List<City> cityList = query.list();
         return cityList;
     }
@@ -72,6 +82,7 @@ public class CityDao {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         Session currentSession = sessionFactory.openSession();
         Criteria criteria = currentSession.createCriteria(City.class);
+        criteria.createAlias("country", "countryAlias", JoinType.LEFT_OUTER_JOIN);
 
         if (cityQueryFilterDto.getId() != null) {
             criteria.add(Restrictions.eq("id", cityQueryFilterDto.getId()));
@@ -79,6 +90,10 @@ public class CityDao {
 
         if (cityQueryFilterDto.getCity() != null) {
             criteria.add(Restrictions.eq("city", cityQueryFilterDto.getCity()));
+        }
+
+        if (cityQueryFilterDto.getCountry() != null) {
+            criteria.add(Restrictions.eq("countryAlias.country", cityQueryFilterDto.getCountry().getCountry()));
         }
 
         List<City> cityList = criteria.list();
