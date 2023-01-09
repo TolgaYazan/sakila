@@ -1,6 +1,10 @@
 package com.uniyaz.film.domain;
 
 import com.uniyaz.common.domain.BaseEntity;
+import com.uniyaz.customer.domain.Customer;
+import com.uniyaz.filmcategory.domain.FilmCategory;
+import com.uniyaz.language.domain.Language;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -18,6 +22,23 @@ public class Film extends BaseEntity {
 
     @Column(name = "title", length = 255)
     private String title;
+
+    @Column(name = "length", length = 255)
+    private Long length;
+
+    @Column(name = "release_year", length = 255)
+    private Long releaseyear;
+
+    @Column(name = "special_features", length = 255)
+    private String specialFeatures;
+
+    @Transient
+    private FilmCategory filmCategory;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "language_id")
+    @ForeignKey(name = "fk_film_language")
+    private Language language;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_update")
@@ -48,8 +69,56 @@ public class Film extends BaseEntity {
         this.lastUpdate = lastUpdate;
     }
 
+    public Long getLength() {
+        return length;
+    }
+
+    public void setLength(Long length) {
+        this.length = length;
+    }
+
+    public Long getReleaseyear() {
+        return releaseyear;
+    }
+
+    public void setReleaseyear(Long releaseyear) {
+        this.releaseyear = releaseyear;
+    }
+
+    public String getSpecialFeatures() {
+        return specialFeatures;
+    }
+
+    public void setSpecialFeatures(String specialFeatures) {
+        this.specialFeatures = specialFeatures;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public FilmCategory getFilmCategory() {
+        return filmCategory;
+    }
+
+    public void setFilmCategory(FilmCategory filmCategory) {
+        this.filmCategory = filmCategory;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
+    }
+
     @Override
     public String toString() {
-        return title;
+        return "Film{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", length=" + length +
+                ", releaseyear=" + releaseyear +
+                ", specialFeatures='" + specialFeatures + '\'' +
+                ", language=" + language +
+                ", lastUpdate=" + lastUpdate +
+                '}';
     }
 }

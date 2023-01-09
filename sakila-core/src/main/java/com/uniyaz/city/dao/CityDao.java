@@ -57,7 +57,7 @@ public class CityDao {
         }
 
         if (cityQueryFilterDto.getCountry() != null) {
-            hql += " and city.country = :country ";
+            hql += " and city.country.country = :country ";
         }
 
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -73,7 +73,7 @@ public class CityDao {
         }
 
         if (cityQueryFilterDto.getCountry() != null) {
-            query.setParameter("country", cityQueryFilterDto.getCountry());
+            query.setParameter("country", cityQueryFilterDto.getCountry().getCountry());
         }
 
         List<City> cityList = query.list();

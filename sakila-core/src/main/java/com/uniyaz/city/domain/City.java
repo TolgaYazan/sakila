@@ -21,14 +21,15 @@ public class City extends BaseEntity {
     @Column(name = "city", length = 50)
     private String city;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "last_update")
-    private Date lastUpdate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id")
     @ForeignKey(name = "fk_city_country")
     private Country country;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "last_update")
+    private Date lastUpdate;
 
     @Transient
     private String testStr;

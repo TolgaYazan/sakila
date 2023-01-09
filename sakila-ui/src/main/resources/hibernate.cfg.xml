@@ -7,7 +7,7 @@
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/sakila?useTimezone=true&amp;serverTimezone=Turkey</property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">1234</property>
+        <property name="hibernate.connection.password">Turan190708</property>
         <property name="hibernate.connection.pool_size">1</property>
         <property name="hibernate.current_session_context_class">thread</property>
         <property name="hibernate.show_sql">true</property>
@@ -19,5 +19,17 @@
         <mapping class="com.uniyaz.city.domain.City"></mapping>
         <mapping class="com.uniyaz.film.domain.Film"></mapping>
         <mapping class="com.uniyaz.filmactor.domain.FilmActor"></mapping>
+        <mapping class="com.uniyaz.category.domain.Category"></mapping>
+        <mapping class="com.uniyaz.filmcategory.domain.FilmCategory"></mapping>
+        <mapping class="com.uniyaz.adress.domain.Address"></mapping>
+        <mapping class="com.uniyaz.inventory.domain.Inventory"></mapping>
+        <mapping class="com.uniyaz.staff.domain.Staff"></mapping>
+        <mapping class="com.uniyaz.rental.domain.Rental"></mapping>
+        <mapping class="com.uniyaz.store.domain.Store"></mapping>
+        <mapping class="com.uniyaz.filmtext.domain.FilmText"></mapping>
+        <mapping class="com.uniyaz.language.domain.Language"></mapping>
+        <mapping class="com.uniyaz.payment.domain.Payment"></mapping>
+        <mapping class="com.uniyaz.customer.domain.Customer"></mapping>
+
     </session-factory>
 </hibernate-configuration>
